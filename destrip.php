@@ -133,6 +133,51 @@ class Destripper
 		}
 		$r .= $this->getUnstrippedSubstr($c);
 
+		return $this->rebalance($r);
+	}
+
+	protected function rebalance($str)
+	{
+		$r = '';
+		$tag_stack = array();
+
+		# step 1: remove tags
+		$c = 0;
+		$t = 0;
+		$l = strlen($str);
+		while ($c < $l) {
+			$from = strpos($str, '<', $c);
+			if ($from === false) break;
+			$to = strpos($str, '>', $from);
+			if ($to === false) break;
+			++$to;
+
+			$p = substr($str, $c, $to-$c);
+
+			$tag_inside = substr($str, $from+1, $to-$from-2);
+			list($tag_inside) = explode(' ', $tag_inside, 2);
+			if ($tag_inside{0} === '/') {
+				if (strtolower($tag_stack[0]) !== strtolower(substr($tag_inside, 1))) {
+					if (strtolower($tag_inside) === '/annotation') {
+						// go with it
+						$p = str_ireplace('</annotation>', '', $p);
+					} elseif (strtolower($tag_stack[0]) === 'annotation') {
+						$p = str_ireplace('</', '</annotation></', $p);
+					} else {
+						// oops
+						echo "O NOES IMBALANCED TAG; wanted </{$tag_stack[0]}>; found <{$tag_inside}>\n";
+					}
+				}
+				array_shift($tag_stack);
+			} else {
+				array_unshift($tag_stack, $tag_inside);
+			}
+
+			$r .= $p;
+			$c = $to;
+		}
+		$r .= substr($str, $c);
+
 		return $r;
 	}
 
