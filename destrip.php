@@ -74,9 +74,36 @@ class Destripper
 		return $r;
 	}
 
+	public function getUnstrippedPos($stripped_pos)
+	{
+		$p = $stripped_pos;
+		$acc = 0;
+		foreach ($this->removals as $pos => $count) {
+			if ($pos > $stripped_pos) break;
+			$acc += $count;
+			$p = $pos + $acc + ($stripped_pos - $pos);
+		}
+		return $p;
+	}
+
+	public function getDestrippedDebug()
+	{
+		$l = strlen($this->stripped);
+		$out = str_repeat('-', strlen($this->orig));
+		for ($i = 0; $i < $l; ++$i) {
+			$out{$this->getUnstrippedPos($i)} = '#';
+		}
+		return $out;
+	}
+
+	protected function getUnstrippedSubstr($start, $len)
+	{
+	}
+
 	public function applyAnnotations(array $annotations)
 	{
-		$input = $this->stripped;
+		$rems = $this->removals;
+		$o = $this->orig;
 		#ksort($annotations);
 		$r = '';
 		$c = 0;

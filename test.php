@@ -37,11 +37,12 @@ function test_destripper($in) {
 	$d = new Destripper($in);
 	var_dump($d->getStripped());
 	$annotations = AnnotationService::call($d->getStripped());
-	var_dump('-----------------------------------');
+	echo "------------------------------------------------------------------------\n";
 	var_dump($d->getDestripped());
-	var_dump('-----------------------------------');
+	var_dump($d->getDestrippedDebug());
+	echo "------------------------------------------------------------------------\n";
 	var_dump($d->applyAnnotations($annotations));
-	var_dump('===================================');
+	echo "========================================================================\n";
 }
 
 #test_destripper('abcdef<g>hi');
@@ -51,6 +52,8 @@ function test_destripper($in) {
 test_destripper('This is <b>cop</b>per sulphate');
 test_destripper('This is <b>copper</b> sulphate');
 test_destripper('This is <b>copper sulphate</b>');
+test_destripper('<p>This is <b>copper sulphate</b></p>');
+test_destripper('<p>This is <b>copper sulphate</b>.</p>');
 
 /*
 #$stripped = $output;
