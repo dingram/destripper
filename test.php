@@ -3,7 +3,7 @@ require 'destrip.php';
 
 class AnnotationService
 {
-	protected static $words = array('copper');
+	protected static $words = array('copper', 'sulphate');
 
 	protected static function findAnnotations($in, $word)
 	{
@@ -49,6 +49,7 @@ function test_destripper($in) {
 #test_destripper('abc<d>ef<g>hi');
 #test_destripper('abc<b>def</b>ghi');
 #test_destripper('This is copper sulphate');
+
 test_destripper('This is <b>cop</b>per sulphate');
 test_destripper('This is <b>copper</b> sulphate');
 test_destripper('This is <b>copper sulphate</b>');
