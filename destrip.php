@@ -111,8 +111,9 @@ class Destripper
 		$rems = $this->removals;
 		$o = $this->orig;
 		#ksort($annotations);
-		$r = '';
 		$c = 0;
+		// init string from start of orig until start of stripped
+		$r = substr($this->orig, 0, $this->getUnstrippedPos(0));
 		foreach ($annotations as $pos => $word) {
 			if ($pos < $c) {
 				trigger_error('Overlapping annotations?!');
