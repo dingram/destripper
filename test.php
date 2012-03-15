@@ -50,14 +50,21 @@ function test_destripper($in) {
 #test_destripper('abc<b>def</b>ghi');
 #test_destripper('This is copper sulphate');
 
-test_destripper('This is <b>cop</b>per sulphate');
-test_destripper('This is <b>copper</b> sulphate');
-test_destripper('This is <b>copper sulphate</b>');
-test_destripper('<p>This is <b>copper sulphate</b></p>');
-test_destripper('<p>This is <b>copper sulphate</b>.</p>');
+#test_destripper('This is <b>cop</b>per sulphate');
+#test_destripper('This is <b>copper</b> sulphate');
+#test_destripper('This is <b>copper sulphate</b>');
+#test_destripper('<p>This is <b>copper sulphate</b></p>');
+#test_destripper('<p>This is <b>copper sulphate</b>.</p>');
 
-/*
-#$stripped = $output;
+$test_cases = array(
+	'<p>This is copper isn\'t it cool</p>',
+	'<p>This is cop<b>per</b> isn\'t it cool</p>',
+	'<p>This is <b>copper</b> isn\'t it cool</p>',
+	'<p>This is <b>copper ruddy sulphate</b> isn\'t it cool</p>',
+	'<p>This is <b>copper ruddy</b> sulphate isn\'t it cool</p>',
+	'<p>This is copper <b>ruddy</b> sulphate isn\'t it cool</p>',
+);
 
-$annotations = array();
- */
+foreach ($test_cases as $test) {
+	test_destripper($test);
+}
