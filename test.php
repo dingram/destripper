@@ -33,16 +33,16 @@ class AnnotationService
 #var_dump(AnnotationService::call('copper copper cooper capper copper cop per coppe'));
 
 function test_destripper($in) {
-	var_dump($in);
+	echo $in . "\n";
 	$d = new Destripper($in);
-	var_dump($d->getStripped());
+	#var_dump($d->getStripped());
 	$annotations = AnnotationService::call($d->getStripped());
-	echo "------------------------------------------------------------------------\n";
-	var_dump($d->getDestripped());
-	var_dump($d->getDestrippedDebug());
-	echo "------------------------------------------------------------------------\n";
-	var_dump($d->applyAnnotations($annotations));
-	echo "========================================================================\n";
+	#echo "------------------------------------------------------------------------\n";
+	#var_dump($d->getDestripped());
+	#var_dump($d->getDestrippedDebug());
+	echo "\n------------------------------------------------------------------------\n\n";
+	echo $d->applyAnnotations($annotations) . "\n";
+	echo "\n========================================================================\n\n";
 }
 
 #test_destripper('abcdef<g>hi');
