@@ -96,8 +96,14 @@ class Destripper
 		return $out;
 	}
 
-	protected function getUnstrippedSubstr($start, $len)
+	protected function getUnstrippedSubstr($start, $len=null)
 	{
+		$s = $this->getUnstrippedPos($start);
+		if ($len === null) {
+			return substr($this->orig, $s);
+		}
+		$e = $this->getUnstrippedPos($start+$len);
+		return substr($this->orig, $s, $e-$s);
 	}
 
 	public function applyAnnotations(array $annotations)
@@ -112,19 +118,19 @@ class Destripper
 				trigger_error('Overlapping annotations?!');
 			}
 			// get string from end of last until beginning of next annotation
-			$r .= substr($this->stripped, $c, $pos - $c);
+			$r .= $this->getUnstrippedSubstr($c, $pos - $c);
 			// open annotation
 			$r .= '<annotation id="'.$word.'">';
 			#$r .= '<'.$word.'>';
 			// get word
-			$r .= substr($this->stripped, $pos, strlen($word));
+			$r .= $this->getUnstrippedSubstr($pos, strlen($word));
 			// close annotation
 			$r .= '</annotation>';
 			#$r .= '</'.$word.'>';
 			// advance
 			$c = $pos + strlen($word);
 		}
-		$r .= substr($this->stripped, $c);
+		$r .= $this->getUnstrippedSubstr($c);
 
 		return $r;
 	}
