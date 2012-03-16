@@ -174,6 +174,8 @@ class Destripper
 					}
 				}
 				array_shift($tag_stack);
+			} elseif (substr($tag_inside, -1) === '/') {
+				// self-closing; ignore
 			} else {
 				array_unshift($tag_stack, $tag_inside);
 			}
