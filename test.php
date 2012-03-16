@@ -12,7 +12,7 @@ class AnnotationService
 		do {
 			$an = stripos($in, $word, $an);
 			if ($an !== false) {
-				$annotations[$an] = $word;
+				$annotations[$an] = array($word, strlen($word));
 			}
 			++$an;
 		} while ($an !== false);

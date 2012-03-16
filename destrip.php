@@ -119,7 +119,8 @@ class Destripper
 		$c = 0;
 		// init string from start of orig until start of stripped
 		$r = substr($this->orig, 0, $this->getUnstrippedPos(0));
-		foreach ($annotations as $pos => $word) {
+		foreach ($annotations as $pos => $pair) {
+			list($word, $matchlen) = $pair;
 			if ($pos < $c) {
 				trigger_error('Overlapping annotations?!');
 			}
@@ -129,7 +130,7 @@ class Destripper
 			$r .= '<annotation id="'.$word.'">';
 			#$r .= '<'.$word.'>';
 			// get word
-			$r .= $this->getUnstrippedSubstr($pos, strlen($word));
+			$r .= $this->getUnstrippedSubstr($pos, $matchlen);
 			// close annotation
 			$r .= '</annotation>';
 			#$r .= '</'.$word.'>';
