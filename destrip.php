@@ -160,24 +160,26 @@ class Destripper
 			$p = substr($str, $c, $to-$c);
 
 			$tag_inside = substr($str, $from+1, $to-$from-2);
-			list($tag_inside) = explode(' ', $tag_inside, 2);
-			if ($tag_inside{0} === '/') {
-				if (strtolower($tag_stack[0]) !== strtolower(substr($tag_inside, 1))) {
-					if (strtolower($tag_inside) === '/annotation') {
-						// go with it
-						$p = str_ireplace('</annotation>', '', $p);
-					} elseif (strtolower($tag_stack[0]) === 'annotation') {
-						$p = str_ireplace('</', '</annotation></', $p);
-					} else {
-						// oops
-						echo "O NOES IMBALANCED TAG; wanted </{$tag_stack[0]}>; found <{$tag_inside}>\n";
+			if (substr($tag_inside, -1) !== '/') {
+				// hacky -- if the last character is a /, assume it's self-closing
+				list($tag_inside) = explode(' ', $tag_inside, 2);
+
+				if ($tag_inside{0} === '/') {
+					if (strtolower($tag_stack[0]) !== strtolower(substr($tag_inside, 1))) {
+						if (strtolower($tag_inside) === '/annotation') {
+							// go with it
+							$p = str_ireplace('</annotation>', '', $p);
+						} elseif (strtolower($tag_stack[0]) === 'annotation') {
+							$p = str_ireplace('</', '</annotation></', $p);
+						} else {
+							// oops
+							echo "O NOES IMBALANCED TAG; wanted </{$tag_stack[0]}>; found <{$tag_inside}>\n";
+						}
 					}
+					array_shift($tag_stack);
+				} else {
+					array_unshift($tag_stack, $tag_inside);
 				}
-				array_shift($tag_stack);
-			} elseif (substr($tag_inside, -1) === '/') {
-				// self-closing; ignore
-			} else {
-				array_unshift($tag_stack, $tag_inside);
 			}
 
 			$r .= $p;
