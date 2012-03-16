@@ -33,7 +33,12 @@ class Destripper
 			#var_dump($to);
 			if ($to === false) break;
 			++$to;
-			$removals[$from - $t] = $to - $from;
+			$loc = $from - $t;
+			if (isset($removals[$loc])) {
+				$removals[$loc] += ($to - $from);
+			} else {
+				$removals[$loc] = ($to - $from);
+			}
 			$t += ($to - $from);
 			$p = substr($o, $c, $from-$c);
 			$r .= $p;

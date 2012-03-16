@@ -63,6 +63,7 @@ $test_cases = array(
 	'<p>This is <b>copper ruddy sulphate</b> isn\'t it cool</p>',
 	'<p>This is <b>copper ruddy</b> sulphate isn\'t it cool</p>',
 	'<p>This is copper <b>ruddy</b> sulphate isn\'t it cool</p>',
+	'<p><s>This is copper <b>ruddy</b> sulphate isn\'t it cool</s></p>',
 );
 
 foreach ($test_cases as $test) {
